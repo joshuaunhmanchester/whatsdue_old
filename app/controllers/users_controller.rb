@@ -21,20 +21,30 @@ class UsersController < ApplicationController
   def edit
   end
 
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
+  # def create
+  #   @user = User.new(user_params)
 
-    respond_to do |format|
+  #   respond_to do |format|
+  #     if @user.save
+  #       format.html { redirect_to @user, notice: 'User was successfully created.' }
+  #       format.json { render action: 'show', status: :created, location: @user }
+  #     else
+  #       format.html { render action: 'new' }
+  #       format.json { render json: @user.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
+
+  # POST /users
+  # This is the method that gets hit when a new user Registers.
+  # We create the new users with the params and if successfully saved,
+  # redirect them to add their first class.
+  def create
+      @user = User.new(params[:user])
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @user }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+          session[:user_id] = @user.id
+          redirect_to courses_controller_new
       end
-    end
   end
 
   # PATCH/PUT /users/1
