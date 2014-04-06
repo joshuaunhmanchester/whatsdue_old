@@ -1,4 +1,6 @@
 Whatsdue::Application.routes.draw do
+  resources :exams
+
   resources :assignments
 
   resources :courses
