@@ -1,16 +1,4 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
-  # GET /users
-  # GET /users.json
-  def index
-    @users = User.all
-  end
-
-  # GET /users/1
-  # GET /users/1.json
-  def show
-  end
 
   # GET /users/new
   def new
@@ -19,21 +7,18 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+      @user = User.find(params[:id])
   end
 
-  # POST /users
-  # POST /users.json
+  # Method that attempts to create a new User in the database.
+  # If successful, redirect them to the create class page to have them create their first class.
   def create
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @user }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      session[:user_id] = @user.id
+      redirect_to courses_controller_create
+    else
+      render "new"
     end
   end
 
@@ -52,7 +37,6 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
     @user.destroy
     respond_to do |format|
@@ -69,6 +53,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :school_name, :password, :user_id)
+      params.require(:user).permit(:first_name, :last_name, :email, :school_name, :password, :password_confirmation)
     end
 end
