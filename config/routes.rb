@@ -1,4 +1,5 @@
 Whatsdue::Application.routes.draw do
+  get '/', to: 'home#index', as: 'home'
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
 
